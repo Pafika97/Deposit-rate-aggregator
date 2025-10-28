@@ -1,0 +1,6 @@
+bank_name,country,currency,product,rate_apr,link,source
+Bank A,US,USD,12m fixed,5.20,https://bank-a.example,manual
+Bank B,EU,EUR,12m fixed,3.10,https://bank-b.example,manual
+Bank C,UK,GBP,24m fixed,4.85,https://bank-c.example,manual
+Bank D,JP,JPY,12m fixed,0.25,https://bank-d.example,manual
+Bank E,AE,AED,12m fixed,4.00,https://bank-e.example,manual
