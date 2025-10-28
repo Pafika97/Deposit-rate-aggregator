@@ -1,0 +1,65 @@
+# Конфиг источников. Добавляйте банки/агрегаторы в этот список.
+# Поддерживаются типы: json, static_html, playwright, csv (локальный файл).
+# Каждая запись должна возвращать список вкладов (deposit products).
+sources:
+  - name: "Demo Aggregator JSON"
+    country: "US"
+    currency_hint: ["USD"]
+    type: "json"
+    url: "https://example.com/api/deposits"   # замените на реальный API/JSON
+    json_map:
+      list_path: "$"           # путь к массиву (JSONPath-подобный: $, $.items, $.data.products и т.п.)
+      fields:
+        bank_name: "bank"
+        product: "term"
+        currency: "currency"
+        rate_apr: "rate_apr"
+        link: "link"
+  - name: "Example Bank (static HTML)"
+    country: "UK"
+    currency_hint: ["GBP"]
+    type: "static_html"
+    url: "https://examplebank.co.uk/savings/fixed-deposits"  # замените на реальную страницу
+    html:
+      rows:
+        selector: "table.rates tbody tr"
+      fields:
+        bank_name:
+          value: "Example Bank UK"
+        product:
+          selector: "td:nth-child(1)"
+          regex: null
+        currency:
+          value: "GBP"
+        rate_apr:
+          selector: "td:nth-child(3)"
+          regex: "(\d+[\.,]?\d*)\s*%"
+        link:
+          selector: "a"
+          attr: "href"
+  - name: "Dynamic Site (Playwright)"
+    country: "EU"
+    currency_hint: ["EUR"]
+    type: "playwright"
+    url: "https://example.eu/rates"
+    playwright:
+      wait_for: "table.rates"
+      rows_selector: "table.rates tbody tr"
+      fields:
+        bank_name:
+          value: "Example Dynamic Bank"
+        product:
+          selector: "td:nth-child(1)"
+        currency:
+          value: "EUR"
+        rate_apr:
+          selector: "td:nth-child(2)"
+          regex: "(\d+[\.,]?\d*)\s*%"
+        link:
+          selector: "a.more"
+          attr: "href"
+  - name: "Manual CSV (local)"
+    type: "csv"
+    path: "manual_sources/demo_banks.csv"
+    country: "Various"
+    currency_hint: ["USD","EUR","GBP","JPY"]
